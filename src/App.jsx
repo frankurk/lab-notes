@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
+import AppRouter from "./navigation/Routes";
+
 
 function App() {
 
   return (
-    <div>
-      <h1 className='text-3xl font-bold underline'>Lab-Notes</h1>
-    </div>
+    <AppRouter />
   )
 }
 
