@@ -6,7 +6,7 @@ const Sidebar = () => {
 
   return (
     <div>
-      <div className=" bg-white dark:bg-gray-800 ">
+      <div >
         <div className="flex flex-col sm:flex-row sm:justify-around">
           <div >
             <nav className="mt-10 px-6 ">
