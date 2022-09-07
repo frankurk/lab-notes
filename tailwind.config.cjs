@@ -5,8 +5,11 @@ module.exports = {
     "./src/**/*.{react,js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'nunito': ['Nunito', 'sans-serif']
+      }
+    },
   },
   plugins: [],
 }
-
