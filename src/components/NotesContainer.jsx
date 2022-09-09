@@ -1,8 +1,12 @@
-import React from 'react'
+import React from 'react';
+import CreateNote from './CreateNote';
 
 const NotesContainer = () => {
   return (
-    <div>NotesContainer</div>
+    <div>
+      <CreateNote />
+    </div>
+
   )
 }
 
