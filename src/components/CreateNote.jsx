@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const CreateNote = () => {
   const [showInput, setShowInput] = useState(false);
 
   const beforeFocus = (
-    <div className="w-2/4 mt-5 p-3 rounded-lg border border-white h-14 text-white" onClick={() => setShowInput(!showInput)}>
+    <div className="w-2/4 mt-5 p-3 rounded-lg border border-white h-14 text-white" >
       <input className="border-0 bg-transparent w-full outline-0 text-white font-semibold  placeholder:placeholder-opacity-10" placeholder='Take a note...'></input>
     </div>
   );
 
   return (
-    <div className="flex flex-row justify-center" >
-      {!showInput ? (
+    <div className="flex flex-row justify-center" onClick={() => setShowInput(!showInput)} >
+      {showInput ? (
         beforeFocus
       ) : (
         <form className="w-2/4 mt-5 p-3 rounded-lg border border-white">
