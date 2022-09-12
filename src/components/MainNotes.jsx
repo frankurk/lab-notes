@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import Note from './Note';
 
-const MainNotes = ({showInput, onClick, titleValue, textValue}) => {
+const MainNotes = ({showInput, onClick, titleValue, textValue, handleNoteClick, notesArr}) => {
+
+  console.log(notesArr, "notes Arr in MainNotes");
 
   return (
     <div className="flex flex-row justify-center" onClick={onClick}>
@@ -18,12 +21,15 @@ const MainNotes = ({showInput, onClick, titleValue, textValue}) => {
             rows="1"
             placeholder="Take a note..."
           />
-          <button type='button' className="bg-transparent outline-0 text-white font-semibold">
+          <button type='button' className="bg-transparent outline-0 text-white font-semibold" onClick={handleNoteClick}>
            Close
           </button>
         </form>
-      <div>
-        {/* notes map */}
+        <div>
+        {notesArr ? notesArr.map((item, index) => 
+          <Note title={item.title} text={item.text} key={index}/>
+        ) : null}
+        
       </div>
     </div>
   );
