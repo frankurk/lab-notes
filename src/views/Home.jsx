@@ -1,9 +1,16 @@
 import React from 'react';
+import { useState } from 'react';
 import Header from '../components/Header';
+import MainNotes from '../components/MainNotes';
 import Sidebar from '../components/Sidebar';
-import NotesContainer from '../components/NotesContainer';
 
 const Home = () => {
+  const [showInput, setShowInput] = useState(false);
+  const [title, setTitle] = useState('');
+  const [text, setText] = useState('');
+
+  console.log(title, text);
+
   return (
     <div className="flex flex-row flex-wrap border-4 border-rose-500 w-full h-screen bg-white dark:bg-gray-800">
       <div className="border-4 border-orange-500 h-[8%] w-full">
@@ -13,7 +20,12 @@ const Home = () => {
         <Sidebar />
       </div>
       <div className="border-4 border-green-500 w-[85%] h-[92%]">
-        <NotesContainer />
+        <MainNotes
+          showInput={showInput}
+          onClick={() => setShowInput(true)}
+          titleValue={(e) => setTitle(e.target.value)}
+          textValue={(e) => setText(e.target.value)}
+        />
       </div>
     </div>
   );
