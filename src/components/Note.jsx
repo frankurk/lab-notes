@@ -2,7 +2,7 @@ import React from 'react'
 
 const Note = ({title, text}) => {
   return (
-    <div className='flex flex-col flex-wrap w-20 h-20 rounded-lg border border-white text-white'>
+    <div className='flex flex-col rounded-lg border border-white text-white w-60 m-5 h-auto p-3 break-words'>
         <h2>{title}</h2>
         <p>{text}</p>
     </div>
