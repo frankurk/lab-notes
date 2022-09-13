@@ -28,7 +28,7 @@ const Home = () => {
       <div className="border-4 border-blue-500 w-[15%] h-[92%]">
         <Sidebar />
       </div>
-      <div className="border-4 border-green-500 px-12  w-[85%] h-[92%]">
+      <div className="border-4 border-green-500 px-12  w-[85%] h-[92%] overflow-scroll">
         <MainNotes
           showInput={showInput}
           onClick={() => setShowInput(true)}
