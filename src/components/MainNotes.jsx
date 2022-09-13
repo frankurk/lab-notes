@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Note from './Note';
 
 const MainNotes = ({showInput, onClick, titleValue, textValue, handleNoteClick, notesArr, title, text}) => {
 
+  const textAreaRef = useRef(null);
+  
  const closeNoteComponent = (
   <div className="w-2/4 mt-5 p-3 rounded-lg border border-white self-center" onClick={onClick}>
     <input className='border-0 bg-transparent w-full outline-0 ext-white font-semibold' placeholder="Take a note..."/>
   </div>
  )
+
+ const autoGrow = (elem) =>{
+  elem.current.style.height = "5px";
+  elem.current.style.height = (10 + 
+  elem.current.scrollHeight)+"px";
+}
 
   return (
     <div className="flex flex-col justify-center " >
@@ -22,6 +30,8 @@ const MainNotes = ({showInput, onClick, titleValue, textValue, handleNoteClick, 
           /> 
           <textarea
             onChange={textValue}
+            ref={textAreaRef}
+            onInput={()=>autoGrow(textAreaRef)}
             value={text}
             className="border-0 w-full bg-transparent outline-0 text-white overflow-hidden min-h-3 resize-none"
             cols="30"
@@ -33,7 +43,7 @@ const MainNotes = ({showInput, onClick, titleValue, textValue, handleNoteClick, 
           </button> 
         </form> 
         : closeNoteComponent }
-        <div className='flex flex-row flex-wrap '>
+        <div className='grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2'>
         {notesArr ? notesArr.map((item, index) => 
           <Note title={item.title} text={item.text} key={index}/>
         ) : null}
