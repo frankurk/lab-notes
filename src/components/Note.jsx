@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import kebab from '../assets/images/kebabmenu.png';
 
-const Note = ({ title, text }) => {
+const Note = ({ title, text, onDelete }) => {
   const [kebabmenu, setKebabMenu] = useState(false);
 
   return (
@@ -20,12 +20,12 @@ const Note = ({ title, text }) => {
             <div className="absolute flex w-24 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700  z-50 py-2 mt-[70px] ml-28 m-0">
               <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
                 <li>
-                  <button className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                  <button className="w-24 text-left block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                     Edit
                   </button>
                 </li>
                 <li>
-                  <button className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                  <button onClick={onDelete} className="w-24 text-left block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                     Delete
                   </button>
                 </li>

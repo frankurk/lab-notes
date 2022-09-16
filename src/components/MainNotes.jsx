@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import Note from './Note';
 
-const MainNotes = ({showInput, onClick, titleValue, textValue, handleNoteClick, notesArr, title, text}) => {
+const MainNotes = ({showInput, onClick, titleValue, textValue, handleNoteClick, notesArr, setNotesArr, title, text}) => {
 
   const textAreaRef = useRef(null);
   
@@ -16,6 +16,10 @@ const MainNotes = ({showInput, onClick, titleValue, textValue, handleNoteClick, 
   elem.current.style.height = (10 + 
   elem.current.scrollHeight)+"px";
 }
+
+const deleteNote = id => {
+  setNotesArr(notesArr.filter(item => item.id !== id));
+};
 
   return (
     <div className="flex flex-col justify-center " >
@@ -44,8 +48,8 @@ const MainNotes = ({showInput, onClick, titleValue, textValue, handleNoteClick, 
         </form> 
         : closeNoteComponent }
         <div className='grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2'>
-        {notesArr ? notesArr.map((item, index) => 
-          <Note title={item.title} text={item.text} key={index}/>
+        {notesArr ? notesArr.map((item) => 
+          <Note title={item.title} text={item.text} onDelete={() => deleteNote(item.id)} key={item.id}/>
         ) : null}
         
       </div>
