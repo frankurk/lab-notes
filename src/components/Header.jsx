@@ -1,10 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../assets/images/Dark.png';
 import Avatar from '../assets/images/Avatar.png';
+import { useRef } from 'react';
 
 const Header = () => {
   const [menu, setMenu] = useState(false);
+
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const checkIfClickedOutside = (e) => {
+      if (menu && menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', checkIfClickedOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', checkIfClickedOutside);
+    };
+  }, [menu]);
 
   return (
     <div className="flex flex-row justify-between items-center text-white py-1 px-4">
@@ -12,7 +29,7 @@ const Header = () => {
         <img src={Logo} className="w-12 h-12 mx-2" />
         <h3 className="text-xl font-semibold">LabNotes</h3>
       </div>
-      <div>
+      <div ref={menuRef}>
         <button onClick={() => setMenu(!menu)} type="button">
           <img src={Avatar} className="w-12 h-12 mx-2" />
         </button>
