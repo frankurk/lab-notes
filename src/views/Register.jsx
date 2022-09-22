@@ -1,16 +1,30 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import Logo from '../assets/images/Dark.png';
 
-const Login = () => {
+const Register = () => {
   return (
     <div className="flex justify-center items-center w-full h-screen dark:bg-gray-800">
       <div className="flex flex-col items-center justify-around w-1/4 h-3/5 dark:bg-gray-900 rounded-3xl text-white min-w-[350px]">
         <div className="flex flex-col justify-center items-center">
-        <img src={Logo} className="w-24 h-24" />
-        <h1 className="text-4xl font-semibold text-white">LabNotes</h1>
+          <img src={Logo} className="w-24 h-24" />
+          <h1 className="text-4xl font-semibold text-white">LabNotes</h1>
         </div>
         <form>
+          <div>
+            <label htmlFor="name" className="sr-only">
+              Name
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="name"
+              autoComplete="name"
+              required
+              className="w-[250px] appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+              placeholder="Name"
+            />
+          </div>
           <div>
             <label htmlFor="email-address" className="sr-only">
               Email address
@@ -21,7 +35,7 @@ const Login = () => {
               type="email"
               autoComplete="email"
               required
-              className="w-[250px] appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+              className="w-[250px] appearance-none rounded-none  border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
               placeholder="Email address"
             />
           </div>
@@ -46,11 +60,11 @@ const Login = () => {
         >
           Sign in
         </button>
-        <p>Dont you have an account?</p>
-        <Link to="/register">SIGN UP</Link>
+        <p>Already have an account?</p>
+        <Link to="/">LOG IN</Link>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;
