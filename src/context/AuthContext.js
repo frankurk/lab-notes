@@ -11,7 +11,6 @@ export const AuthProvider = ({ children }) => {
 
 
 
-
   //POST REQUEST FOR LOGIN
   return (
     <AuthContext.Provider value={{ headers, setIsLoggedin}}>

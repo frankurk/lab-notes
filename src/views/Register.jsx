@@ -1,8 +1,48 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, {useState} from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  createUserWithEmailAndPassword,sendEmailVerification,
+  updateProfile,
+} from 'firebase/auth';
+import { auth } from "../firebase/init.js";
 import Logo from '../assets/images/Dark.png';
 
 const Register = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleNameInput = (e) => {
+    setName(e.target.value);
+  }
+
+  const handleEmailInput = (e) => {
+    setEmail(e.target.value);
+  }
+
+  const handlePasswordInput = (e) => {
+    setPassword(e.target.value);
+  }
+
+  const handleSubmit = async () => {
+    try{
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(auth.currentUser, {
+        displayName: name,
+      });
+      console.log(auth.currentUser);
+      await sendEmailVerification(auth.currentUser);
+      console.log(cred);
+      navigate("/home");
+      return cred 
+      
+    } catch (error) {
+      console.log("Error al crear tu cuenta");
+    }
+  }
+ 
   return (
     <div className="flex justify-center items-center w-full h-screen dark:bg-gray-800">
       <div className="flex flex-col items-center justify-around w-1/4 h-3/5 dark:bg-gray-900 rounded-3xl text-white min-w-[350px]">
@@ -16,6 +56,7 @@ const Register = () => {
               Name
             </label>
             <input
+              onBlur={handleNameInput}
               id="name"
               name="name"
               type="name"
@@ -30,6 +71,7 @@ const Register = () => {
               Email address
             </label>
             <input
+              onBlur={handleEmailInput}
               id="email-address"
               name="email"
               type="email"
@@ -44,6 +86,7 @@ const Register = () => {
               Password
             </label>
             <input
+              onBlur={handlePasswordInput}
               id="password"
               name="password"
               type="password"
@@ -55,6 +98,7 @@ const Register = () => {
           </div>
         </form>
         <button
+          onClick={handleSubmit}
           className="w-[250px] h-10 bg-[#00C2CB] font-semibold text-lg rounded-xl"
           type="submit"
         >
