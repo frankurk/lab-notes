@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import Logo from '../assets/images/Dark.png';
 
 const Login = () => {
@@ -45,6 +46,8 @@ const Login = () => {
         >
           Sign in
         </button>
+        <p>Dont you have an account?</p>
+        <Link to="/register">SIGN UP</Link>
       </div>
     </div>
   );
