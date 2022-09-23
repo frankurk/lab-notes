@@ -1,33 +1,27 @@
-import React, {useState} from 'react';
+import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  createUserWithEmailAndPassword,sendEmailVerification,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
   updateProfile,
 } from 'firebase/auth';
-import { auth } from "../firebase/init.js";
+import { auth } from '../firebase/init.js';
 import Logo from '../assets/images/Dark.png';
+import { AuthContext } from '../context/AuthContext.jsx';
 
 const Register = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
+  const {
+    name,
+    email,
+    password,
+    handleNameInput,
+    handleEmailInput,
+    handlePasswordInput,
+  } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleNameInput = (e) => {
-    setName(e.target.value);
-  }
-
-  const handleEmailInput = (e) => {
-    setEmail(e.target.value);
-  }
-
-  const handlePasswordInput = (e) => {
-    setPassword(e.target.value);
-  }
-
   const handleSubmit = async () => {
-    try{
+    try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(auth.currentUser, {
         displayName: name,
@@ -35,14 +29,13 @@ const Register = () => {
       console.log(auth.currentUser);
       await sendEmailVerification(auth.currentUser);
       console.log(cred);
-      navigate("/home");
-      return cred 
-      
+      navigate('/home');
+      return cred;
     } catch (error) {
-      console.log("Error al crear tu cuenta");
+      console.log('Error al crear tu cuenta');
     }
-  }
- 
+  };
+
   return (
     <div className="flex justify-center items-center w-full h-screen dark:bg-gray-800">
       <div className="flex flex-col items-center justify-around w-1/4 h-3/5 dark:bg-gray-900 rounded-3xl text-white min-w-[350px]">
