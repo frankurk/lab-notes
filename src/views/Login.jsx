@@ -1,8 +1,25 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import React, { useContext } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import Logo from '../assets/images/Dark.png';
+import { AuthContext } from '../context/AuthContext.jsx';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase/init';
 
 const Login = () => {
+  
+  const { email, password, handleEmailInput, handlePasswordInput } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+     try {
+      const cred = await signInWithEmailAndPassword(auth, email, password);
+      navigate('/home');
+      return cred;
+     } catch (error) {
+      console.log('Error al ingresar a tu cuenta');
+     }
+  }
+
   return (
     <div className="flex justify-center items-center w-full h-screen dark:bg-gray-800">
       <div className="flex flex-col items-center justify-around w-1/4 h-3/5 dark:bg-gray-900 rounded-3xl text-white min-w-[350px]">
@@ -16,6 +33,7 @@ const Login = () => {
               Email address
             </label>
             <input
+              onBlur={handleEmailInput}
               id="email-address"
               name="email"
               type="email"
@@ -30,6 +48,7 @@ const Login = () => {
               Password
             </label>
             <input
+              onBlur={handlePasswordInput}
               id="password"
               name="password"
               type="password"
@@ -41,6 +60,7 @@ const Login = () => {
           </div>
         </form>
         <button
+          onClick={handleLogin}
           className="w-[250px] h-10 bg-[#00C2CB] font-semibold text-lg rounded-xl"
           type="submit"
         >
