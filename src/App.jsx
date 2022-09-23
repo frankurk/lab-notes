@@ -1,12 +1,13 @@
 import React from 'react';
-import AppRouter from "./navigation/Routes";
-
+import { AuthProvider } from './context/AuthContext';
+import AppRouter from './navigation/Routes';
 
 function App() {
-
   return (
-    <AppRouter />
-  )
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;
