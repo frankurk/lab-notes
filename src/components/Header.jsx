@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../assets/images/Dark.png';
 import Avatar from '../assets/images/Avatar.png';
 import { useRef } from 'react';
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase/init';
 
 const Header = () => {
   const [menu, setMenu] = useState(false);
+
+  const navigate = useNavigate();
 
   const menuRef = useRef(null);
 
@@ -23,6 +27,14 @@ const Header = () => {
     };
   }, [menu]);
 
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      navigate('/');
+    } catch (error) {
+      console.log('Error login out');
+    }
+  }
   return (
     <div className="flex flex-row justify-between items-center text-white py-1 px-4">
       <div className="flex flex-row items-center">
@@ -45,12 +57,12 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <Link
-                  to="#"
+                <button
+                  onClick={handleSignOut}
                   className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   Sign out
-                </Link>
+                </button>
               </li>
             </ul>
           </div>
