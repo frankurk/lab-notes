@@ -3,6 +3,8 @@ import { useState } from 'react';
 import Header from '../components/Header';
 import MainNotes from '../components/MainNotes';
 import Sidebar from '../components/Sidebar';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../firebase/init';
 
 const Home = () => {
   const [showInput, setShowInput] = useState(false);
@@ -10,22 +12,31 @@ const Home = () => {
   const [text, setText] = useState('');
   const [notesArr, setNotesArr] = useState([]);
 
-  const newNote = () => {
-    const noteId = Math.random().toString(16).slice(2);
+  //CREATING A NOTE
+  const newNote = async () => {
     if (text !== '' || title !== '') {
-    setNotesArr((current) => [
-      ...current,
-      {
+      const noteId = Math.random().toString(16).slice(2);
+      await addDoc(collection(db, 'notes'), {
         title: title,
         text: text,
         id: noteId,
-      },
+      });
+    }
+    setTitle('');
+    setText('');
+    setShowInput(false);
+  };
+
+  /*   if (text !== '' || title !== '') {
+    setNotesArr((current) => [
+      ...current,
+     
     ]);
     setTitle('');
     setText('');
     setShowInput(false);
-  }
-  };
+  } 
+ */
 
   return (
     <div className="flex flex-row flex-wrap border-4 border-rose-500 w-full h-screen bg-white dark:bg-gray-800">
@@ -39,8 +50,8 @@ const Home = () => {
         <MainNotes
           showInput={showInput}
           onClick={() => setShowInput(true)}
-          titleValue={(e) => setTitle(e.target.value)}
-          textValue={(e) => setText(e.target.value)}
+          titleValue={e => setTitle(e.target.value)}
+          textValue={e => setText(e.target.value)}
           title={title}
           text={text}
           handleNoteClick={() => newNote()}
