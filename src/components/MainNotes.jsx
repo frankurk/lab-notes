@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import Note from './Note';
-import { deleteDoc, doc } from 'firebase/firestore';
+import { deleteDoc, updateDoc, doc } from 'firebase/firestore';
 import { db } from "../firebase/init";
 
 const MainNotes = ({
@@ -41,13 +41,27 @@ const MainNotes = ({
   //DELETE NOTE 
   const deleteNote = async (id) => {
     await deleteDoc(doc(db, "notes", id));
-    
   };
 
-/*   const deletePost = async (id) => {
-    await deleteDoc(doc(db, 'posts', id));
-  };
- */
+  //EDIT NOTE 
+const editNote = async (id, title, text) => {
+  const noteRef = doc(db, "notes", id);
+  await updateDoc(noteRef, {
+    title,
+    text,
+  });
+}
+
+
+/*   const editPost = async (id, review, movie, country) => {
+    const postRef = doc(db, 'posts', id);
+    await updateDoc(postRef, {
+      review,
+      movie,
+      country,
+    });
+  }; */
+
 
   const closeModal = () => {
     modalRef.current.close();
