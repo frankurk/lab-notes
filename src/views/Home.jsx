@@ -1,9 +1,9 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import MainNotes from '../components/MainNotes';
 import Sidebar from '../components/Sidebar';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/init';
 
 const Home = () => {
@@ -15,11 +15,10 @@ const Home = () => {
   //CREATING A NOTE
   const newNote = async () => {
     if (text !== '' || title !== '') {
-      const noteId = Math.random().toString(16).slice(2);
       await addDoc(collection(db, 'notes'), {
         title: title,
         text: text,
-        id: noteId,
+     
       });
     }
     setTitle('');
@@ -27,16 +26,18 @@ const Home = () => {
     setShowInput(false);
   };
 
-  /*   if (text !== '' || title !== '') {
-    setNotesArr((current) => [
-      ...current,
-     
-    ]);
-    setTitle('');
-    setText('');
-    setShowInput(false);
-  } 
- */
+  //FETCHING NOTES FROM FIREBASE
+useEffect(() => {
+  onSnapshot(collection(db, "notes"), snapshot => {
+    const notesFromFirestore = snapshot.docs.map(note => {
+      return {
+        id: note.id,
+        ...note.data(),
+      }
+    })
+    setNotesArr(notesFromFirestore)
+  })
+}, [])
 
   return (
     <div className="flex flex-row flex-wrap border-4 border-rose-500 w-full h-screen bg-white dark:bg-gray-800">

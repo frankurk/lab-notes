@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react';
 import Note from './Note';
+import { deleteDoc, doc } from 'firebase/firestore';
+import { db } from "../firebase/init";
 
 const MainNotes = ({
   showInput,
@@ -36,9 +38,16 @@ const MainNotes = ({
     elem.current.style.height = 10 + elem.current.scrollHeight + 'px';
   };
 
-  const deleteNote = (id) => {
-    setNotesArr(notesArr.filter((item) => item.id !== id));
+  //DELETE NOTE 
+  const deleteNote = async (id) => {
+    await deleteDoc(doc(db, "notes", id));
+    
   };
+
+/*   const deletePost = async (id) => {
+    await deleteDoc(doc(db, 'posts', id));
+  };
+ */
 
   const closeModal = () => {
     modalRef.current.close();
