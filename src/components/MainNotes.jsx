@@ -13,9 +13,13 @@ const MainNotes = ({
   setNotesArr,
   title,
   text,
+  setTitle,
+  setText,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedNote, setSelectedNote] = useState('');
+  const [updatedTitle, setUpdatedTitle] = useState("");
+  const [updatedText, setUpdatedText] = useState("");
 
   const textAreaRef = useRef(null);
   const modalRef = useRef(null);
@@ -44,29 +48,20 @@ const MainNotes = ({
   };
 
   //EDIT NOTE 
-const editNote = async (id, title, text) => {
+const editNote = async (id) => {
   const noteRef = doc(db, "notes", id);
   await updateDoc(noteRef, {
-    title,
-    text,
+    title: updatedTitle,
+    text: updatedText,
   });
+  closeModal();
 }
-
-
-/*   const editPost = async (id, review, movie, country) => {
-    const postRef = doc(db, 'posts', id);
-    await updateDoc(postRef, {
-      review,
-      movie,
-      country,
-    });
-  }; */
-
 
   const closeModal = () => {
     modalRef.current.close();
   };
 
+  // OPENING MODAL SELECTING NOTE
   const openModal = (id) => {
     notesArr.map((item) => {
       if (item.id === id) {
@@ -76,6 +71,8 @@ const editNote = async (id, title, text) => {
       }
     });
   };
+
+  console.log(selectedNote, selectedNote.id)
 
   return (
     <>
@@ -126,20 +123,23 @@ const editNote = async (id, title, text) => {
         </div>
       </div>
 
+
+      {/*MODAL*/}          
       <dialog className="w-2/5 p-0 rounded-lg bg-white mt-36" ref={modalRef}>
         <div className="backdrop-sepia bg-white/30">
           <form className="w-full p-5 rounded-lg border border-white self-center dark:bg-gray-800">
             <input
-              onChange={titleValue}
-              value={selectedNote.title}
+              ref={ref}
+              onChange={e=>setUpdatedTitle(e.target.value)}
+              defaultValue={selectedNote.title}
               className="border-0 bg-transparent w-full outline-0 text-white font-semibold  my-4 placeholder:placeholder-opacity-10"
               placeholder="Title"
             />
             <textarea
-              onChange={textValue}
-              ref={textAreaRef}
+              ref={ref}
+              onChange={e=>setUpdatedText(e.target.value)}
               onInput={() => autoGrow(textAreaRef)}
-              value={selectedNote.text}
+              defaultValue={selectedNote.text}
               className="border-0 w-full bg-transparent outline-0 text-white overflow-hidden min-h-3 resize-none"
               cols="30"
               rows="1"
@@ -149,7 +149,8 @@ const editNote = async (id, title, text) => {
               <button
                 type="button"
                 className="bg-transparent outline-0 text-white font-semibold"
-                onClick={() => closeModal()}
+                onClick={() => editNote(selectedNote.id)}
+             
               >
                 Close
               </button>

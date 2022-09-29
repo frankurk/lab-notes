@@ -58,6 +58,8 @@ useEffect(() => {
           handleNoteClick={() => newNote()}
           notesArr={notesArr}
           setNotesArr={setNotesArr}
+          setTitle={setTitle}
+          setText={setText}
         />
       </div>
     </div>
