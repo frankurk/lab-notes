@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 import Note from './Note';
 import { deleteDoc, updateDoc, doc } from 'firebase/firestore';
-import { db } from "../firebase/init";
+import { db } from '../firebase/init';
+import Modal from 'react-modal';
 
 const MainNotes = ({
   showInput,
@@ -10,21 +11,20 @@ const MainNotes = ({
   textValue,
   handleNoteClick,
   notesArr,
-  setNotesArr,
   title,
   text,
-  setTitle,
-  setText,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedNote, setSelectedNote] = useState('');
-  const [updatedTitle, setUpdatedTitle] = useState("");
-  const [updatedText, setUpdatedText] = useState("");
+  const [updatedTitle, setUpdatedTitle] = useState('');
+  const [updatedText, setUpdatedText] = useState('');
 
   const textAreaRef = useRef(null);
   const modalRef = useRef(null);
   const ref = useRef(null);
-
+  Modal.setAppElement('#root');
+  
+  //CLOSING NOTE COMPONENT
   const closeNoteComponent = (
     <div
       className="w-2/4 mt-5 p-3 rounded-lg border border-white self-center"
@@ -36,43 +36,40 @@ const MainNotes = ({
       />
     </div>
   );
-
-  const autoGrow = (elem) => {
+  
+  //AUTOGROW NOTE COMPONENT
+  const autoGrow = elem => {
     elem.current.style.height = '5px';
     elem.current.style.height = 10 + elem.current.scrollHeight + 'px';
   };
 
-  //DELETE NOTE 
-  const deleteNote = async (id) => {
-    await deleteDoc(doc(db, "notes", id));
+  //DELETE NOTE
+  const deleteNote = async id => {
+    await deleteDoc(doc(db, 'notes', id));
   };
 
-  //EDIT NOTE 
-const editNote = async (id) => {
-  const noteRef = doc(db, "notes", id);
-  await updateDoc(noteRef, {
-    title: updatedTitle,
-    text: updatedText,
-  });
-  closeModal();
-}
-
-  const closeModal = () => {
-    modalRef.current.close();
+  //EDIT NOTE
+  const editNote = async id => {
+    const noteRef = doc(db, 'notes', id);
+    await updateDoc(noteRef, {
+      title: updatedTitle,
+      text: updatedText,
+    });
+    setIsOpen(false);
   };
 
   // OPENING MODAL SELECTING NOTE
-  const openModal = (id) => {
-    notesArr.map((item) => {
+  const openModal = id => {
+    notesArr.map(item => {
       if (item.id === id) {
-        setIsOpen(!isOpen);
+        setIsOpen(true);
         setSelectedNote(item);
-        modalRef.current.showModal();
+        // modalRef.current.showModal();
       }
     });
   };
 
-  console.log(selectedNote, selectedNote.id)
+  console.log(selectedNote, 'selectedNote');
 
   return (
     <>
@@ -110,7 +107,7 @@ const editNote = async (id) => {
         )}
         <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2">
           {notesArr
-            ? notesArr.map((item) => (
+            ? notesArr.map(item => (
                 <Note
                   title={item.title}
                   text={item.text}
@@ -123,21 +120,24 @@ const editNote = async (id) => {
         </div>
       </div>
 
-
-      {/*MODAL*/}          
-      <dialog className="w-2/5 p-0 rounded-lg bg-white mt-36" ref={modalRef}>
+      {/*MODAL*/}
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={() => openModal()}
+        contentLabel="My dialog"
+        className="w-2/5 p-0 rounded-lg bg-white mt-36"
+        ref={modalRef}
+      >
         <div className="backdrop-sepia bg-white/30">
           <form className="w-full p-5 rounded-lg border border-white self-center dark:bg-gray-800">
             <input
-              ref={ref}
-              onChange={e=>setUpdatedTitle(e.target.value)}
+              onChange={e => setUpdatedTitle(e.target.value)}
               defaultValue={selectedNote.title}
               className="border-0 bg-transparent w-full outline-0 text-white font-semibold  my-4 placeholder:placeholder-opacity-10"
               placeholder="Title"
             />
             <textarea
-              ref={ref}
-              onChange={e=>setUpdatedText(e.target.value)}
+              onChange={e => setUpdatedText(e.target.value)}
               onInput={() => autoGrow(textAreaRef)}
               defaultValue={selectedNote.text}
               className="border-0 w-full bg-transparent outline-0 text-white overflow-hidden min-h-3 resize-none"
@@ -150,14 +150,13 @@ const editNote = async (id) => {
                 type="button"
                 className="bg-transparent outline-0 text-white font-semibold"
                 onClick={() => editNote(selectedNote.id)}
-             
               >
                 Close
               </button>
             </div>
           </form>
         </div>
-      </dialog>
+      </Modal>
     </>
   );
 };
