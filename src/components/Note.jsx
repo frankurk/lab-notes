@@ -22,7 +22,7 @@ const Note = ({ title, text, onDelete, onEdit }) => {
   }, [kebabmenu]);
 
   return (
-    <div ref={noteMenuRef} className=" relative flex flex-col rounded-lg border border-white text-white w-60 m-5 h-fit p-3 break-words">
+    <div ref={noteMenuRef} className=" relative flex flex-col rounded-lg border border-gray-500 text-white w-60 m-5 h-fit p-3 break-words">
       <h2>{title}</h2>
       <p>{text}</p>
       <button
@@ -34,7 +34,7 @@ const Note = ({ title, text, onDelete, onEdit }) => {
 
       {kebabmenu ? (
         <div
-          className="absolute flex w-24 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700  z-50 py-2 mt-[70px] ml-28 m-0"
+          className="absolute flex w-24 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 py-2 mt-[70px] ml-28 m-0"
         >
           <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
             <li>
