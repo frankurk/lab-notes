@@ -27,7 +27,7 @@ const MainNotes = ({
   //CLOSING NOTE COMPONENT
   const closeNoteComponent = (
     <div
-      className="w-2/4 mt-5 p-3 rounded-lg border border-white self-center"
+      className="w-2/4 mt-5 p-3 rounded-lg border border-gray-500 self-center"
       onClick={onClick}
     >
       <input
@@ -50,12 +50,16 @@ const MainNotes = ({
 
   //EDIT NOTE
   const editNote = async id => {
-    const noteRef = doc(db, 'notes', id);
-    await updateDoc(noteRef, {
-      title: updatedTitle,
-      text: updatedText,
-    });
-    setIsOpen(false);
+    if (updatedTitle || updatedText !== '') {
+      const noteRef = doc(db, 'notes', id);
+      await updateDoc(noteRef, {
+        title: updatedTitle,
+        text: updatedText,
+      });
+      setIsOpen(false);
+    } else {
+      setIsOpen(false);
+    }
   };
 
   // OPENING MODAL SELECTING NOTE
@@ -75,7 +79,7 @@ const MainNotes = ({
     <>
       <div ref={ref} className="flex flex-col justify-center">
         {showInput ? (
-          <form className="w-2/4 my-5 p-5 rounded-lg border border-white self-center">
+          <form className="w-2/4 my-5 p-5 rounded-lg border border-gray-500 self-center">
             <input
               onChange={titleValue}
               value={title}
@@ -125,10 +129,11 @@ const MainNotes = ({
         isOpen={isOpen}
         onRequestClose={() => openModal()}
         contentLabel="My dialog"
-        className="w-2/5 p-0 rounded-lg bg-white mt-36"
+        className="absolute w-2/5 p-0 rounded-lg after:bg-gray-700 ml-[30%] mt-36 z-50"
         ref={modalRef}
+        style={{overlay: {backgroundColor: "rgba(9, 9, 14, 0.6)"}}}
       >
-        <div className="backdrop-sepia bg-white/30">
+        <div>
           <form className="w-full p-5 rounded-lg border border-white self-center dark:bg-gray-800">
             <input
               onChange={e => setUpdatedTitle(e.target.value)}

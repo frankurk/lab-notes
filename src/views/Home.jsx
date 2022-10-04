@@ -40,14 +40,14 @@ useEffect(() => {
 }, [])
 
   return (
-    <div className="flex flex-row flex-wrap border-4 border-rose-500 w-full h-screen bg-white dark:bg-gray-800">
-      <div className="border-4 border-orange-500 h-[8%] w-full">
+    <div className="flex flex-row flex-wrap w-full h-screen bg-white dark:bg-gray-800">
+      <div className="border-2 h-[8%] w-full border-gray-500">
         <Header />
       </div>
-      <div className="border-4 border-blue-500 w-[15%] h-[92%]">
+      <div className="border-r border-gray-500 w-[15%] h-[92%]">
         <Sidebar />
       </div>
-      <div className="border-4 border-green-500 px-12  w-[85%] h-[92%] overflow-scroll">
+      <div className="border-1 border-gray-500 px-12  w-[85%] h-[92%] overflow-scroll">
         <MainNotes
           showInput={showInput}
           onClick={() => setShowInput(true)}
