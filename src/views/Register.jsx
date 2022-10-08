@@ -97,8 +97,7 @@ const Register = () => {
         >
           Sign in
         </button>
-        <p>Already have an account?</p>
-        <Link to="/">LOG IN</Link>
+        <p className="pb-4">Already have an account?  <Link to="/" className="text-[#00C2CB] hover:underline">Sign in</Link></p>
       </div>
     </div>
   );
