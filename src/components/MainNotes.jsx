@@ -68,12 +68,9 @@ const MainNotes = ({
       if (item.id === id) {
         setIsOpen(true);
         setSelectedNote(item);
-        // modalRef.current.showModal();
       }
     });
   };
-
-  console.log(selectedNote, 'selectedNote');
 
   return (
     <>
@@ -110,7 +107,7 @@ const MainNotes = ({
           closeNoteComponent
         )}
         <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2">
-          {notesArr
+       {notesArr
             ? notesArr.map(item => (
                 <Note
                   title={item.title}

@@ -13,6 +13,7 @@ const Login = () => {
   const handleLogin = async () => {
      try {
       const cred = await signInWithEmailAndPassword(auth, email, password);
+      localStorage.setItem('userUid', auth.currentUser.uid);
       navigate('/home');
       return cred;
      } catch (error) {

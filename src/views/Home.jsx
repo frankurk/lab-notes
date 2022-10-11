@@ -3,7 +3,13 @@ import { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import MainNotes from '../components/MainNotes';
 import Sidebar from '../components/Sidebar';
-import { addDoc, collection, onSnapshot } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  query,
+  where,
+} from 'firebase/firestore';
 import { db } from '../firebase/init';
 
 const Home = () => {
@@ -12,13 +18,15 @@ const Home = () => {
   const [text, setText] = useState('');
   const [notesArr, setNotesArr] = useState([]);
 
+  const userUid = localStorage.getItem('userUid');
+
   //CREATING A NOTE
   const newNote = async () => {
     if (text !== '' || title !== '') {
       await addDoc(collection(db, 'notes'), {
         title: title,
         text: text,
-     
+        userUid: userUid,
       });
     }
     setTitle('');
@@ -26,19 +34,20 @@ const Home = () => {
     setShowInput(false);
   };
 
-  //FETCHING NOTES FROM FIREBASE
-useEffect(() => {
-  onSnapshot(collection(db, "notes"), snapshot => {
-    const notesFromFirestore = snapshot.docs.map(note => {
-      return {
-        id: note.id,
-        ...note.data(),
-      }
+  //FETCHING NOTES FROM FIREBASE BY USER
+  useEffect(() => {
+    const q = query(collection(db, "notes"), where("userUid", "==", userUid));
+    onSnapshot(q , snapshot => {
+      const notesFromFirestore = snapshot.docs.map(note => {
+        return {
+          id: note.id,
+          ...note.data(),
+        }
+      })
+      setNotesArr(notesFromFirestore)
     })
-    setNotesArr(notesFromFirestore)
-  })
-}, [])
-
+  }, [])
+  
   return (
     <div className="flex flex-row flex-wrap w-full h-screen bg-white dark:bg-gray-800">
       <div className="border-2 h-[8%] w-full border-gray-500">

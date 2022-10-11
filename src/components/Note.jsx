@@ -7,6 +7,7 @@ const Note = ({ title, text, onDelete, onEdit }) => {
 
   const noteMenuRef = useRef(null);
 
+  //CLOSING WHEN CLICKING OUSIDE OF NOTE
   useEffect(() => {
     const checkIfClickedOutside = (e) => {
       if (kebabmenu && noteMenuRef.current && !noteMenuRef.current.contains(e.target)) {
