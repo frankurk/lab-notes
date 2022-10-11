@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [user, setUser] = useState(null);
 
   //OBSERVER
   useEffect(() => {
