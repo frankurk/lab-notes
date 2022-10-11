@@ -27,8 +27,8 @@ const Register = () => {
         displayName: name,
       });
       console.log(auth.currentUser);
+      localStorage.setItem('userUid', auth.currentUser.uid);
       await sendEmailVerification(auth.currentUser);
-      console.log(cred);
       navigate('/home');
       return cred;
     } catch (error) {
