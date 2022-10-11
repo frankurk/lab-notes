@@ -9,6 +9,8 @@ import {
   onSnapshot,
   query,
   where,
+  orderBy, 
+  Timestamp
 } from 'firebase/firestore';
 import { db } from '../firebase/init';
 
@@ -27,6 +29,7 @@ const Home = () => {
         title: title,
         text: text,
         userUid: userUid,
+        date: Timestamp.fromDate(new Date())
       });
     }
     setTitle('');
@@ -36,7 +39,7 @@ const Home = () => {
 
   //FETCHING NOTES FROM FIREBASE BY USER
   useEffect(() => {
-    const q = query(collection(db, "notes"), where("userUid", "==", userUid));
+    const q = query(collection(db, "notes"), where("userUid", "==", userUid), orderBy("date", "desc"));
     onSnapshot(q , snapshot => {
       const notesFromFirestore = snapshot.docs.map(note => {
         return {
