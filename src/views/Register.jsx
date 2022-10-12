@@ -1,13 +1,15 @@
-import React, { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
   updateProfile,
-} from 'firebase/auth';
-import { auth } from '../firebase/init.js';
-import Logo from '../assets/images/Dark.png';
-import { AuthContext } from '../context/AuthContext.jsx';
+} from "firebase/auth";
+import { auth } from "../firebase/init.js";
+import Logo from "../assets/images/Dark.png";
+import { AuthContext } from "../context/AuthContext.jsx";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const Register = () => {
   const {
@@ -19,6 +21,7 @@ const Register = () => {
     handlePasswordInput,
   } = useContext(AuthContext);
   const navigate = useNavigate();
+  const MySwal = withReactContent(Swal);
 
   const handleSubmit = async () => {
     try {
@@ -26,13 +29,37 @@ const Register = () => {
       await updateProfile(auth.currentUser, {
         displayName: name,
       });
-      console.log(auth.currentUser);
-      localStorage.setItem('userUid', auth.currentUser.uid);
+      localStorage.setItem("userUid", auth.currentUser.uid);
       await sendEmailVerification(auth.currentUser);
-      navigate('/home');
+      navigate("/home");
       return cred;
     } catch (error) {
-      console.log('Error al crear tu cuenta');
+      if (error?.code === "auth/invalid-email") {
+        MySwal.fire({
+          title: <strong>Invalid email. Please enter a valid format: "example@gmail.com"</strong>,
+          icon: 'error',
+        });
+      } else if (error.code === "auth/missing-email") {
+        MySwal.fire({
+          title: <strong>Please enter your email.</strong>,
+          icon: 'error',
+        });
+      } else if (error.code === "auth/internal-error") {
+        MySwal.fire({
+          title: <strong>Oops, something went wrong on our side! Please try again later.</strong>,
+          icon: 'error',
+        });
+      } else if (error.code === "auth/email-already-in-use") {
+        MySwal.fire({
+          title: <strong>Email already in use. Try loggin in instead.</strong>,
+          icon: 'error',
+        });
+      } else if (error.code === "auth/weak-password") {
+        MySwal.fire({
+          title: <strong>Your password is too weak. Try with a longer one (6 characters or more)</strong>,
+          icon: 'error',
+        });
+      }
     }
   };
 
@@ -54,9 +81,9 @@ const Register = () => {
               name="name"
               type="name"
               autoComplete="name"
-              required
               className="w-[250px] appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
               placeholder="Name"
+              required
             />
           </div>
           <div>
@@ -69,9 +96,9 @@ const Register = () => {
               name="email"
               type="email"
               autoComplete="email"
-              required
               className="w-[250px] appearance-none rounded-none  border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
               placeholder="Email address"
+              required
             />
           </div>
           <div>
@@ -84,9 +111,9 @@ const Register = () => {
               name="password"
               type="password"
               autoComplete="current-password"
-              required
               className="w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
               placeholder="Password"
+              required
             />
           </div>
         </form>
@@ -97,7 +124,12 @@ const Register = () => {
         >
           Sign in
         </button>
-        <p className="pb-4">Already have an account?  <Link to="/" className="text-[#00C2CB] hover:underline">Sign in</Link></p>
+        <p className="pb-4">
+          Already have an account?{" "}
+          <Link to="/" className="text-[#00C2CB] hover:underline">
+            Sign in
+          </Link>
+        </p>
       </div>
     </div>
   );
