@@ -3,6 +3,7 @@ import Note from './Note';
 import { deleteDoc, updateDoc, doc } from 'firebase/firestore';
 import { db } from '../firebase/init';
 import Modal from 'react-modal';
+import Masonry from 'react-masonry-css';
 
 const MainNotes = ({
   showInput,
@@ -23,7 +24,7 @@ const MainNotes = ({
   const modalRef = useRef(null);
   const ref = useRef(null);
   Modal.setAppElement('#root');
-  
+
   //CLOSING NOTE COMPONENT
   const closeNoteComponent = (
     <div
@@ -36,20 +37,20 @@ const MainNotes = ({
       />
     </div>
   );
-  
+
   //AUTOGROW NOTE COMPONENT
-  const autoGrow = elem => {
+  const autoGrow = (elem) => {
     elem.current.style.height = '5px';
     elem.current.style.height = 10 + elem.current.scrollHeight + 'px';
   };
 
   //DELETE NOTE
-  const deleteNote = async id => {
+  const deleteNote = async (id) => {
     await deleteDoc(doc(db, 'notes', id));
   };
 
   //EDIT NOTE
-  const editNote = async id => {
+  const editNote = async (id) => {
     if (updatedTitle || updatedText !== '') {
       const noteRef = doc(db, 'notes', id);
       await updateDoc(noteRef, {
@@ -63,8 +64,8 @@ const MainNotes = ({
   };
 
   // OPENING MODAL SELECTING NOTE
-  const openModal = id => {
-    notesArr.map(item => {
+  const openModal = (id) => {
+    notesArr.map((item) => {
       if (item.id === id) {
         setIsOpen(true);
         setSelectedNote(item);
@@ -106,18 +107,23 @@ const MainNotes = ({
         ) : (
           closeNoteComponent
         )}
-        <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2">
-       {notesArr
-            ? notesArr.map(item => (
-                <Note
-                  title={item.title}
-                  text={item.text}
-                  onDelete={() => deleteNote(item.id)}
-                  onEdit={() => openModal(item.id)}
-                  key={item.id}
-                />
-              ))
-            : null}
+        <div>
+          <Masonry
+            breakpointCols={4}
+            className="flex w-auto"
+          >
+            {notesArr
+              ? notesArr.map((item) => (
+                  <Note
+                    title={item.title}
+                    text={item.text}
+                    onDelete={() => deleteNote(item.id)}
+                    onEdit={() => openModal(item.id)}
+                    key={item.id}
+                  />
+                ))
+              : null}
+          </Masonry>
         </div>
       </div>
 
@@ -128,18 +134,18 @@ const MainNotes = ({
         contentLabel="My dialog"
         className="absolute w-2/5 p-0 rounded-lg after:bg-gray-700 ml-[30%] mt-36 z-50"
         ref={modalRef}
-        style={{overlay: {backgroundColor: "rgba(9, 9, 14, 0.6)"}}}
+        style={{ overlay: { backgroundColor: 'rgba(9, 9, 14, 0.6)' } }}
       >
         <div>
           <form className="w-full p-5 rounded-lg border border-white self-center dark:bg-gray-800">
             <input
-              onChange={e => setUpdatedTitle(e.target.value)}
+              onChange={(e) => setUpdatedTitle(e.target.value)}
               defaultValue={selectedNote.title}
               className="border-0 bg-transparent w-full outline-0 text-white font-semibold  my-4 placeholder:placeholder-opacity-10"
               placeholder="Title"
             />
             <textarea
-              onChange={e => setUpdatedText(e.target.value)}
+              onChange={(e) => setUpdatedText(e.target.value)}
               onInput={() => autoGrow(textAreaRef)}
               defaultValue={selectedNote.text}
               className="border-0 w-full bg-transparent outline-0 text-white overflow-hidden min-h-3 resize-none"
