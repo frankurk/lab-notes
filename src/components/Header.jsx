@@ -30,6 +30,7 @@ const Header = () => {
   const handleSignOut = async () => {
     try {
       await signOut(auth);
+      localStorage.clear();
       navigate('/');
     } catch (error) {
       console.log('Error login out');

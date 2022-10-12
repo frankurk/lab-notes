@@ -56,7 +56,7 @@ const Home = () => {
       <div className="border-2 h-[8%] w-full border-gray-500">
         <Header />
       </div>
-      <div className="border-r border-gray-500 w-[15%] h-[92%]">
+      <div className="border-r border-gray-500 w-[15%] h-[92%] min-w-min">
         <Sidebar />
       </div>
       <div className="border-1 border-gray-500 px-12  w-[85%] h-[92%] overflow-scroll">
