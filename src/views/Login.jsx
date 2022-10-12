@@ -4,11 +4,15 @@ import Logo from '../assets/images/Dark.png';
 import { AuthContext } from '../context/AuthContext.jsx';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/init';
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 
 const Login = () => {
   
   const { email, password, handleEmailInput, handlePasswordInput } = useContext(AuthContext);
   const navigate = useNavigate();
+  const MySwal = withReactContent(Swal);
 
   const handleLogin = async () => {
      try {
@@ -17,7 +21,32 @@ const Login = () => {
       navigate('/home');
       return cred;
      } catch (error) {
-      console.log('Error al ingresar a tu cuenta');
+      if (error.code === 'auth/invalid-email') {
+        MySwal.fire({
+          title: <strong>Invalid email. Please enter a valid format: "example@gmail.com"</strong>,
+          icon: 'error',
+        });
+      } else if (error.code === 'auth/missing-email') {
+        MySwal.fire({
+          title: <strong>Please enter your email.</strong>,
+          icon: 'error',
+        });
+      } else if (error.code === 'auth/internal-error') {
+        MySwal.fire({
+          title: <strong>Oops, something went wrong on our side! Please try again later.</strong>,
+          icon: 'error',
+        });
+      } else if (error.code === 'auth/wrong-password') {
+        MySwal.fire({
+          title: <strong>Wrong password. Please try again.</strong>,
+          icon: 'error',
+        });
+      } else if (error.code === 'auth/user-not-found') {
+        MySwal.fire({
+          title: <strong>User not found. Try signing up instead.</strong>,
+          icon: 'error',
+        });
+      }
      }
   }
 

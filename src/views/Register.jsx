@@ -20,9 +20,7 @@ const Register = () => {
     handleEmailInput,
     handlePasswordInput,
   } = useContext(AuthContext);
-
   const navigate = useNavigate();
-
   const MySwal = withReactContent(Swal);
 
   const handleSubmit = async () => {
