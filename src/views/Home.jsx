@@ -2,7 +2,6 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import MainNotes from '../components/MainNotes';
-import Sidebar from '../components/Sidebar';
 import {
   addDoc,
   collection,
@@ -56,10 +55,7 @@ const Home = () => {
       <div className="border-2 h-[8%] w-full border-gray-500">
         <Header />
       </div>
-      <div className="border-r border-gray-500 w-[15%] h-[92%] min-w-min">
-        <Sidebar />
-      </div>
-      <div className="border-1 border-gray-500 px-12  w-[85%] h-[92%] overflow-scroll">
+      <div className="border border-gray-500 px-12  w-full h-[92%] overflow-scroll">
         <MainNotes
           showInput={showInput}
           onClick={() => setShowInput(true)}
