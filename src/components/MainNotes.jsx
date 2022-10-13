@@ -4,6 +4,8 @@ import { deleteDoc, updateDoc, doc } from 'firebase/firestore';
 import { db } from '../firebase/init';
 import Modal from 'react-modal';
 import Masonry from 'react-masonry-css';
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const MainNotes = ({
   showInput,
@@ -24,6 +26,7 @@ const MainNotes = ({
   const modalRef = useRef(null);
   const ref = useRef(null);
   Modal.setAppElement('#root');
+  const MySwal = withReactContent(Swal);
 
   //CLOSING NOTE COMPONENT
   const closeNoteComponent = (
@@ -48,6 +51,26 @@ const MainNotes = ({
   const deleteNote = async (id) => {
     await deleteDoc(doc(db, 'notes', id));
   };
+
+  const deleteConfirmation = (id) => {
+    Swal.fire({
+      title: 'Are you sure you want to delete this note?',
+      text: "You won't be able to revert this!",
+      showCancelButton: true,
+      confirmButtonColor: '#6fbf73',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
+        deleteNote(id)
+      }
+    })
+  } 
 
   //EDIT NOTE
   const editNote = async (id) => {
@@ -109,15 +132,15 @@ const MainNotes = ({
         )}
         <div>
           <Masonry
-            breakpointCols={4}
-            className="flex w-auto"
+            breakpointCols={{default: 5, 800: 2}}
+            className="flex"
           >
             {notesArr
               ? notesArr.map((item) => (
                   <Note
                     title={item.title}
                     text={item.text}
-                    onDelete={() => deleteNote(item.id)}
+                    onDelete={() => deleteConfirmation(item.id)}
                     onEdit={() => openModal(item.id)}
                     key={item.id}
                   />
