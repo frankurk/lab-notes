@@ -41,11 +41,13 @@ const Home = () => {
     const q = query(collection(db, "notes"), where("userUid", "==", userUid), orderBy("date", "desc"));
     onSnapshot(q , snapshot => {
       const notesFromFirestore = snapshot.docs.map(note => {
+        
         return {
           id: note.id,
           ...note.data(),
         }
       })
+      //console.log(notesFromFirestore,"noteeeee")
       setNotesArr(notesFromFirestore)
     })
   }, [])
