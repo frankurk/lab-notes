@@ -54,7 +54,7 @@ const Home = () => {
   
   return (
     <div className="flex flex-row flex-wrap w-full h-screen bg-white dark:bg-gray-800">
-      <div className="border-2 h-[8%] w-full border-gray-500">
+      <div className="border-2 max-h-24 w-full border-gray-500">
         <Header />
       </div>
       <div className="border border-gray-500 px-12  w-full h-[92%] overflow-scroll">
