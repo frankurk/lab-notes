@@ -90,7 +90,7 @@ const MainNotes = ({
     }
   }; 
  
-  
+
   // OPENING MODAL SELECTING NOTE
   const openModal = (id) => {
     notesArr.map((item) => {
@@ -136,7 +136,7 @@ const MainNotes = ({
           closeNoteComponent
         )}
         <div>
-          <Masonry breakpointCols={{ default: 5, 800: 2 }} className="flex">
+          <Masonry breakpointCols={{ default: 5, 1500: 4, 1200: 3, 800:2, 500:1 }} className="flex">
             {notesArr
               ? notesArr.map((item) => (
                   <Note
