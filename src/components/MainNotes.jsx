@@ -71,26 +71,14 @@ const MainNotes = ({
   //EDIT NOTE
   const editNote = async (id) => {
   
-  let titleToSend = "";
-  let textToSend = ""; 
-
-   if (updatedTitle != '') {
-      titleToSend = updatedTitle;
-    } else{
-      titleToSend =selectedNote.title;
-    }
-  if (updatedText != '') {
-      textToSend = updatedText;
-    } else{
-      textToSend =selectedNote.text;
-    } 
+  let titleToSend = updatedTitle != "" ? updatedTitle : selectedNote.title;
+  let textToSend =  updatedText != "" ? updatedText : selectedNote.text;
 
     //console.log(titleToSend , textToSend, "selecteddata before send")
-    if ( titleToSend != '' && textToSend != '') {
+    if ( titleToSend != '' || textToSend != '') {
       console.log("inside update")
       const noteRef = doc(db, 'notes', id);
       await updateDoc(noteRef, {
-        id,
         title: titleToSend,
         text: textToSend,
       });
@@ -102,9 +90,9 @@ const MainNotes = ({
     }
   }; 
  
+  
   // OPENING MODAL SELECTING NOTE
   const openModal = (id) => {
-    
     notesArr.map((item) => {
       if (item.id === id) {
         setIsOpen(true);
