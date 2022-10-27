@@ -57,7 +57,7 @@ const Login = () => {
         <img src={Logo} className="w-24 h-24" />
         <h1 className="text-4xl font-semibold text-white">LabNotes</h1>
         </div>
-        <form>
+        <form data-testid="login-form">
           <div>
             <label htmlFor="email-address" className="sr-only">
               Email address
@@ -91,6 +91,7 @@ const Login = () => {
         </form>
         <button
           onClick={handleLogin}
+          data-testid="signin-btn"
           className="w-[250px] h-10 bg-[#00C2CB] font-semibold text-lg rounded-xl"
           type="submit"
         >
